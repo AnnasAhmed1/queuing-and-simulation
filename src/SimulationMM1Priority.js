@@ -100,35 +100,6 @@ const SimulationMM1Priority = ({
     return data;
   };
 
-  // const intialFunc = (mean) => {
-  //   if (probility === 0) {
-  //     generateRandomTime(mean);
-
-  //     setProbabilty(1);
-  //     return;
-  //   }
-
-  //   poisonGenetrate(mean, probility);
-  //   setProbabilty(probility + 1);
-
-  //   // do {
-  //   //   generateRandomTime(mean);
-  //   //   i = 1;
-  //   // } while (poisonGenetrate(mean, i));
-  // };
-  // const poisonGenetrate = (mean, x) => {
-  //   let fact = factorialIterative(x);
-  //   let val = (Math.exp ** -mean * mean ** x) / fact;
-  //   console.log(val);
-  //   // if ((Math.exp ** -mean * mean ** x) / fact == 1) {
-  //   //   console.log((Math.exp ** -mean * mean ** x) / fact);
-  //   //   return false;
-  //   // } else {
-  //   //   setProbabilty(1);
-  //   //   return true;
-  //   // }
-  // };
-
   const generateRandomTime = (mean) => {
     // Generate a random number between 0 and 1
     const randomNumber = Math.random();
@@ -138,12 +109,11 @@ const SimulationMM1Priority = ({
   };
 
   const calculateCalculatedData = (data) => {
-    const tempArr = [];
     data = data.map((obj) => ({
       ...obj,
       completed: false,
     }));
-    let tempArray = [];
+    const tempArr = [...data];
 
     if (data.length) {
       const calculatedData = [];
@@ -154,13 +124,20 @@ const SimulationMM1Priority = ({
       let totalTurnaroundTime = 0;
       let finalData = [];
       let currentTime = 0;
+      let push=false
       for (let i = 0; i < data.length; i++) {
         if (data[i].priority === 3) {
           finalData.push(data[i]);
           currentTime += data[i].serviceTime;
         } else {
           for (let j = i + 1; j < data.length; j++) {
-            if (data[j].arrivalTime >= data[i].arrivalTime) {
+            if (
+              data[j].arrivalTime >= data[i].arrivalTime &&
+              data[j].priority > data[i].priority
+            ) {
+              finalData.push(data[j]);
+              data = data.filter((e) => e.customer != data[j].customer);
+            } else if (true) {
             }
             data[i].serviceTime + currentTime;
           }
@@ -168,7 +145,6 @@ const SimulationMM1Priority = ({
       }
       startTime = 0;
       finalData = finalData.filter((v) => v.serviceTime > 0);
-      // console.log(finalData, "11111");
       for (let i = 0; i < finalData.length; i++) {
         const {
           customer,
