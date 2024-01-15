@@ -183,10 +183,16 @@ const SimulationMM1Priority = ({
       let finalData = [];
       let currentTime = 0;
       let push = false;
+      let tempQueue=[];
       for (let i = 0; i < tempArr.length; i++) {
         console.log(tempArr);
-        if (currentTime < data[i].interarrivalTime) {
-          currentTime = data[i].interarrivalTime;
+        if (currentTime < data[i].arrivalTime) {
+          currentTime = data[i].arrivalTime;
+        }
+        for (let k=0;k< tempQueue.length;k++){
+          if (data[k].priority>=data[i].priority){
+            data[data[k].index]
+          }
         }
         if (tempArr[i].priority === 3) {
           tempArr[i].startTime = currentTime;
@@ -195,46 +201,30 @@ const SimulationMM1Priority = ({
           continue;
         } else {
           for (let j = i + 1; j < tempArr.length; j++) {
-            if (
-              tempArr[j].arrivalTime >= currentTime &&
-              tempArr[j].priority > tempArr[i].priority
-            ) {
-              const tempObj = { ...tempArr[i] };
-              tempArr[i] = {
-                ...tempArr[j],
-              };
-              tempArr[j] = { ...tempObj };
-              i = i - 1;
-              break;
-            } else if (
-              tempArr[j].arrivalTime >= currentTime &&
-              currentTime + tempArr[i].serviceTime > tempArr[j].arrivalTime &&
-              tempArr[j].priority > tempArr[i].priority
-            ) {
-              let temp1 = { ...tempArr[i] };
-              let temp2 = { ...tempArr[i] };
-              temp1.serviceTime = currentTime - tempArr[j].arrivalTime;
-              temp1.startTime = currentTime;
-              temp1.endTime = tempArr[j].arrivalTime;
-              temp2.serviceTime -= temp1.serviceTime;
-              currentTime += temp1.serviceTime;
-              tempArr[i] = {
-                ...tempArr[j],
-              };
-              tempArr[j] = {
-                ...temp2,
-              };
-              tempArr = [
-                ...tempArr.slice(0, i - 1),
-                { ...temp1 },
-                ...tempArr.slice(0, i - 1),
-              ];
-              i = i - 1;
-              break;
+            if (tempArr[j].arrivalTime > currentTime) {
+              if (
+                tempArr[i].serviceTime + currentTime > tempArr[j].arrivalTime &&
+                tempArr[j].priority > tempArr[i].priority
+              ) {
+                let temp1 = { ...data[i] };
+                let temp2 = { ...data[i] };
+                temp1.serviceTime = tempArr[j].arrivalTime - currentTime;
+                temp1.startTime = currentTime;
+                temp1.endTime = currentTime + temp1.serviceTime;
+                temp2.serviceTime = temp2.serviceTime - temp1.serviceTime;
+                currentTime = temp1.endTime;
+                data[i] = { ...temp1 };
+                tempQueue.push({ ...temp2, index: i });
+              } else {
+                tempArr[i].startTime = currentTime;
+                tempArr[i].endTime = currentTime + tempArr[i].serviceTime;
+                currentTime = tempArr[i].endTime;
+              }
+            } else {
+              if (tempArr[j].priority > tempArr[i].priority) {
+                tempQueue.push({ ...data[i], index: i });
+              }
             }
-            tempArr[i].startTime = currentTime;
-            tempArr[i].endTime = currentTime + tempArr[i].serviceTime;
-            currentTime += tempArr[i].serviceTime;
           }
         }
       }
