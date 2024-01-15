@@ -44,8 +44,65 @@ const SimulationMM1Priority = ({
 
       const data = generateRandomData(50, arrivalMeanParam, serviceMeanParam);
       setRandomData(data);
-
-      const calculatedData = calculateCalculatedData(data);
+      const dummyData = [
+        {
+          customer: 1,
+          interarrivalTime: 0,
+          arrivalTime: 0,
+          serviceTime: 1,
+          priority: 2,
+        },
+        {
+          customer: 2,
+          interarrivalTime: 5,
+          arrivalTime: 5,
+          serviceTime: 1,
+          priority: 2,
+        },
+        {
+          customer: 3,
+          interarrivalTime: 6,
+          arrivalTime: 11,
+          serviceTime: 10,
+          priority: 1,
+        },
+        {
+          customer: 4,
+          interarrivalTime: 2,
+          arrivalTime: 13,
+          serviceTime: 1,
+          priority: 2,
+        },
+        {
+          customer: 5,
+          interarrivalTime: 0,
+          arrivalTime: 13,
+          serviceTime: 4,
+          priority: 3,
+        },
+        {
+          customer: 6,
+          interarrivalTime: 4,
+          arrivalTime: 17,
+          serviceTime: 6,
+          priority: 1,
+        },
+        {
+          customer: 7,
+          interarrivalTime: 3,
+          arrivalTime: 20,
+          serviceTime: 1,
+          priority: 1,
+        },
+        {
+          customer: 8,
+          interarrivalTime: 3,
+          arrivalTime: 23,
+          serviceTime: 2,
+          priority: 2,
+        },
+      ];
+      const calculatedData = calculateCalculatedData(dummyData);
       setCalculatedData(calculatedData);
     }
   }, [mm1]);
@@ -91,7 +148,7 @@ const SimulationMM1Priority = ({
       const denominator = factorialIterative(i - 1);
       val = val + numerator / denominator;
       // console.log(data);
-      if (val >= 0.9999) {
+      if (val >= 0.99) {
         // break;
         return data.slice(0, -1);
         // return data;
@@ -109,41 +166,81 @@ const SimulationMM1Priority = ({
   };
 
   const calculateCalculatedData = (data) => {
-    data = data.map((obj) => ({
-      ...obj,
-      completed: false,
-    }));
-    const tempArr = [...data];
-
+    // data = data.map((obj) => ({
+    //   ...obj,
+    //   completed: false,
+    // }));
+    let tempArr = [...data];
+    console.log(data);
+    console.log(tempArr);
     if (data.length) {
       const calculatedData = [];
       let serverIdleTime = 0;
       let serverUtilizationTime = 0;
-      let startTime = 0;
+      // let startTime = 0;
       let totalWaitTime = 0;
       let totalTurnaroundTime = 0;
       let finalData = [];
       let currentTime = 0;
-      let push=false
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].priority === 3) {
-          finalData.push(data[i]);
-          currentTime += data[i].serviceTime;
+      let push = false;
+      for (let i = 0; i < tempArr.length; i++) {
+        console.log(tempArr);
+        if (currentTime < data[i].interarrivalTime) {
+          currentTime = data[i].interarrivalTime;
+        }
+        if (tempArr[i].priority === 3) {
+          tempArr[i].startTime = currentTime;
+          tempArr[i].endTime = currentTime + tempArr[i].serviceTime;
+          currentTime = tempArr[i].endTime;
+          continue;
         } else {
-          for (let j = i + 1; j < data.length; j++) {
+          for (let j = i + 1; j < tempArr.length; j++) {
             if (
-              data[j].arrivalTime >= data[i].arrivalTime &&
-              data[j].priority > data[i].priority
+              tempArr[j].arrivalTime >= currentTime &&
+              tempArr[j].priority > tempArr[i].priority
             ) {
-              finalData.push(data[j]);
-              data = data.filter((e) => e.customer != data[j].customer);
-            } else if (true) {
+              const tempObj = { ...tempArr[i] };
+              tempArr[i] = {
+                ...tempArr[j],
+              };
+              tempArr[j] = { ...tempObj };
+              i = i - 1;
+              break;
+            } else if (
+              tempArr[j].arrivalTime >= currentTime &&
+              currentTime + tempArr[i].serviceTime > tempArr[j].arrivalTime &&
+              tempArr[j].priority > tempArr[i].priority
+            ) {
+              let temp1 = { ...tempArr[i] };
+              let temp2 = { ...tempArr[i] };
+              temp1.serviceTime = currentTime - tempArr[j].arrivalTime;
+              temp1.startTime = currentTime;
+              temp1.endTime = tempArr[j].arrivalTime;
+              temp2.serviceTime -= temp1.serviceTime;
+              currentTime += temp1.serviceTime;
+              tempArr[i] = {
+                ...tempArr[j],
+              };
+              tempArr[j] = {
+                ...temp2,
+              };
+              tempArr = [
+                ...tempArr.slice(0, i - 1),
+                { ...temp1 },
+                ...tempArr.slice(0, i - 1),
+              ];
+              i = i - 1;
+              break;
             }
-            data[i].serviceTime + currentTime;
+            tempArr[i].startTime = currentTime;
+            tempArr[i].endTime = currentTime + tempArr[i].serviceTime;
+            currentTime += tempArr[i].serviceTime;
           }
         }
       }
-      startTime = 0;
+      // startTime = 0;
+      finalData = [...tempArr];
+      console.log(tempArr);
       finalData = finalData.filter((v) => v.serviceTime > 0);
       for (let i = 0; i < finalData.length; i++) {
         const {
@@ -152,8 +249,10 @@ const SimulationMM1Priority = ({
           arrivalTime,
           serviceTime,
           priority,
+          startTime,
+          endTime,
         } = finalData[i];
-        const endTime = Math.max(arrivalTime, startTime) + serviceTime;
+        // const endTime = Math.max(arrivalTime, startTime) + serviceTime;
         // console.log(startTime, 111111);
         // const waitTime = startTime - arrivalTime;
         // console.log(startTime);
@@ -167,7 +266,8 @@ const SimulationMM1Priority = ({
           interarrivalTime,
           arrivalTime,
           serviceTime,
-          startTime: Math.max(arrivalTime, startTime),
+          // startTime: Math.max(arrivalTime, startTime),
+          startTime,
           endTime,
           waitTime: i == 0 ? 0 : waitTime,
           turnaroundTime,
@@ -178,12 +278,12 @@ const SimulationMM1Priority = ({
 
         serverUtilizationTime += serviceTime;
 
-        startTime = endTime;
+        // startTime = endTime;
       }
 
       const averageWaitTime = totalWaitTime / finalData.length;
       const averageTurnaroundTime = totalTurnaroundTime / finalData.length;
-      const totalTime = startTime;
+      const totalTime = finalData[finalData.length - 1].endTime;
       const serverUtilization = serverUtilizationTime / totalTime;
       const serverIdle = 1 - serverUtilization;
       return {
