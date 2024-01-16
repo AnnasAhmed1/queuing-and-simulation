@@ -57,9 +57,9 @@ const SimulationMM1 = ({
 
     for (let i = 1; i <= count; i++) {
       const interarrivalTime = Math.round(generateRandomTime(arrivalMean));
-      const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
-      const denominator = factorialIterative(i - 1);
-      val = val + numerator / denominator;
+      // const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
+      // const denominator = factorialIterative(i - 1);
+      // val = val + numerator / denominator;
 
       console.log(val, "val_chkkk");
       const serviceTime = Math.round(generateRandomTime(serviceMean));
@@ -70,13 +70,13 @@ const SimulationMM1 = ({
         arrivalTime: i === 1 ? 0 : arrivalTime,
         serviceTime: Math.max(1, Math.min(10, serviceTime)), // Ensure value is within 1 to 10 range
       });
-      if (val >= 9999) {
-        // break;
+      const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
+      const denominator = factorialIterative(i - 1);
+      val = val + numerator / denominator;
+      if (val >= 0.9999) {
         return data.slice(0, -1);
-        // return data;
       }
     }
-    console.log(val);
     return data;
   };
 

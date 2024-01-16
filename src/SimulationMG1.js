@@ -75,9 +75,6 @@ const SimulationMG1 = ({
 
     for (let i = 1; i <= count; i++) {
       const interarrivalTime = Math.round(generateRandomTime(arrivalMean));
-      const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
-      const denominator = factorialIterative(i - 1);
-      val = val + numerator / denominator;
       const serviceTime = generateRandomServiceTime(
         serviceMean,
         serviceDistribution
@@ -91,8 +88,10 @@ const SimulationMG1 = ({
         arrivalTime: i === 1 ? 0 : arrivalTime,
         serviceTime,
       });
+      const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
+      const denominator = factorialIterative(i - 1);
+      val = val + numerator / denominator;
       if (val >= 0.9999) {
-        // break;
         return data.slice(0, -1);
       }
     }

@@ -157,6 +157,25 @@ const InputSection = ({
             onChange={(e) => setServiceMean(e.target.value)}
           />
         </div>
+        {activeCalculator === "simulation" ? (
+          active === "M/M/2" || active === "M/G/2" || active === "G/G/2" ? (
+            <div className="flex items-center gap-16/ ml/-[auto] justify-between/ pr-16/ ">
+              <label
+                className="block mb-2 text-xl font-bold text-center/ "
+                htmlFor="serviceMeanInput"
+              >
+                Enter Number of Servers:
+              </label>
+              <input
+                id="serviceMeanInput"
+                type="number"
+                className="w-[60%] p-2 border text-center rounded-md ml-auto border-black"
+                value={servers}
+                onChange={(e) => setServers(e.target.value)}
+              />
+            </div>
+          ) : null
+        ) : null}
         {activeCalculator === "queueing" ? (
           active === "M/M/2" || active === "M/G/2" || active === "G/G/2" ? (
             <div className="flex items-center gap-16/ ml/-[auto] justify-between/ pr-16/ ">
