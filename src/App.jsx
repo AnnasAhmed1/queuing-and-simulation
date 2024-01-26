@@ -724,6 +724,7 @@ export default function App() {
               setArrivalMean={setArrivalMean}
               serviceMean={serviceMean}
               setServiceMean={setServiceMean}
+              servers={servers}
               onClick={() => {
                 scrollToSection("calculatorSection");
                 window.location.reload();
@@ -754,6 +755,7 @@ export default function App() {
               setServiceDistribution={setServiceDistribution}
               serviceMean={serviceMean}
               setServiceMean={setServiceMean}
+              servers={servers}
               onClick={() => {
                 scrollToSection("calculatorSection");
                 window.location.reload();
@@ -787,6 +789,7 @@ export default function App() {
               serviceDistribution={serviceDistribution}
               setServiceDistribution={setServiceDistribution}
               serviceMean={serviceMean}
+              servers={servers}
               setServiceMean={setServiceMean}
               onClick={() => {
                 scrollToSection("calculatorSection");
