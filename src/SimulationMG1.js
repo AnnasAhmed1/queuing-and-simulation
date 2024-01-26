@@ -91,7 +91,7 @@ const SimulationMG1 = ({
       const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
       const denominator = factorialIterative(i - 1);
       val = val + numerator / denominator;
-      if (val >= 0.9999) {
+      if (val >= 0.99) {
         return data.slice(0, -1);
       }
     }

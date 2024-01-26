@@ -91,7 +91,7 @@ const SimulationMM1Priority = ({
       const denominator = factorialIterative(i - 1);
       val = val + numerator / denominator;
       // console.log(data);
-      if (val >= 0.9999) {
+      if (val >= 0.99) {
         // break;
         return data.slice(0, -1);
         // return data;

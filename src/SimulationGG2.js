@@ -49,7 +49,7 @@ const SimulationGG2 = ({
       setArrivalDistribution(selectedArrivalDistribution);
 
       const data = generateRandomData(
-        10,
+        25,
         arrivalMeanParam,
         serviceMeanParam,
         selectedArrivalDistribution,
@@ -78,6 +78,18 @@ const SimulationGG2 = ({
       );
       if (i === 1) {
         interarrivalTime = 0;
+      }
+      if (!interarrivalTime || interarrivalTime > 0) {
+        console.log("calll", i - 1, data);
+        if (i > 1) {
+          interarrivalTime = data[i - 1]
+            ? data[i - 1]?.interarrivalTime
+              ? data[i - 1]?.interarrivalTime
+              : 1
+            : 1;
+        } else {
+          interarrivalTime = 1;
+        }
       }
       let serviceTime = generateRandomServiceTime(
         serviceMean,
