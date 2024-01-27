@@ -61,6 +61,37 @@ const SimulationGG2 = ({
       setCalculatedData(calculatedData);
     }
   }, [gg2]);
+  function generateNormalInterarrival(mean) {
+    // Standard deviation (you can adjust this as needed)
+    var standardDeviation = mean / 4;
+
+    // Generate a random number from a uniform distribution (0, 1)
+    var u = Math.random();
+
+    // Use the inverse of the normal distribution CDF to find the corresponding x
+    var x = mean + standardDeviation * Math.sqrt(2) * Math.erfInv(2 * u - 1);
+
+    return x;
+  }
+
+  // Error function approximation
+  // You may want to include a more accurate erfInv implementation for production use
+  Math.erfInv = function (x) {
+    var a1 = 0.254829592;
+    var a2 = -0.284496736;
+    var a3 = 1.421413741;
+    var a4 = -1.453152027;
+    var a5 = 1.061405429;
+    var p = 0.3275911;
+
+    var sign = x < 0 ? -1 : 1;
+    x = Math.abs(x);
+
+    var t = 1.0 / (1.0 + p * x);
+    var y = (((a5 * t + a4) * t + a3) * t + a2) * t + a1 * t;
+
+    return sign * y;
+  };
 
   const generateRandomData = (
     count,
@@ -138,13 +169,15 @@ const SimulationGG2 = ({
       // Generate uniformly-distributed random time
       time = Math.round(Math.random() * mean);
     } else if (distribution === "normal") {
+      time = generateNormalInterarrival(mean);
+      console.log(time, "time");
       // Generate normally-distributed random time
-      const standardDeviation = mean / 3; // Assuming 99.7% of values are within 3 standard deviations
-      let sum = 0;
-      for (let i = 0; i < 12; i++) {
-        sum += Math.random();
-      }
-      time = Math.round((sum - 6) * standardDeviation + mean);
+      // const standardDeviation = mean / 3; // Assuming 99.7% of values are within 3 standard deviations
+      // let sum = 0;
+      // for (let i = 0; i < 12; i++) {
+      //   sum += Math.random();
+      // }
+      // time = Math.round((sum - 6) * standardDeviation + mean);
     }
 
     return time;
