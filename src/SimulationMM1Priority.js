@@ -189,16 +189,11 @@ const SimulationMM1Priority = ({
       let loop = 0;
 
       for (let i = 0; i < tempArr.length; i++) {
-        if (i == 4) {
-          console.log([...tempArr], "tempArr");
-        }
-        if (i == 5) {
-          console.log([...tempArr], "tempArr");
-        }
         loop++;
         if (loop > 30) {
           break;
         }
+        // check if current one is already completed then move to next index
         if (tempArr[i].completed == true) {
           continue;
         }
@@ -235,20 +230,22 @@ const SimulationMM1Priority = ({
         //     i = tempQueueP1[0].index;
         //     console.log(tempArr[i], i,"servt");
         //     tempArr[i].serviceTime =
-        //       parseInt(tempQueueP1[0].serviceTime) 
+        //       parseInt(tempQueueP1[0].serviceTime)
         //       +
         //       parseInt(tempArr[i].serviceTime);
         //       console.log( typeof tempArr[i].serviceTime, "typeof");
         //     tempQueueP1.splice(0, 1);
         //   }
         // }
-
+        // update current time
         if (currentTime < tempArr[i].arrivalTime) {
           currentTime = tempArr[i].arrivalTime;
         }
+        // if priority is 3 do nothing
         if (tempArr[i].priority == 3) {
           tempArr[i].startTime = currentTime;
-          tempArr[i].endTime = parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+          tempArr[i].endTime =
+            parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
           currentTime = tempArr[i].endTime;
           tempArr[i].completed = true;
           continue;
@@ -261,18 +258,21 @@ const SimulationMM1Priority = ({
             if (tempArr[j].arrivalTime > currentTime) {
               // check if higher priority arrives before currents ending
               if (
-                parseInt(tempArr[i].serviceTime) + parseInt(currentTime) > tempArr[j].arrivalTime &&
+                parseInt(tempArr[i].serviceTime) + parseInt(currentTime) >
+                  tempArr[j].arrivalTime &&
                 tempArr[j].priority > tempArr[i].priority
               ) {
-                // 
+                // run this uptill new arrives and send the remaining to temperory array
                 let temp1 = { ...tempArr[i] };
                 let temp2 = { ...tempArr[i] };
                 temp1.serviceTime = tempArr[j].arrivalTime - currentTime;
                 temp1.startTime = currentTime;
-                temp1.endTime = parseInt(currentTime) + parseInt(temp1.serviceTime);
+                temp1.endTime =
+                  parseInt(currentTime) + parseInt(temp1.serviceTime);
                 temp2.serviceTime = temp2.serviceTime - temp1.serviceTime;
                 currentTime = temp1.endTime;
                 tempArr[i] = { ...temp1 };
+                // sending to temperory array on the basis of priority
                 if (temp2?.priority === 3) {
                   tempQueueP3.push({ ...temp2, index: i });
                 } else if (temp2?.priority === 2) {
@@ -281,22 +281,28 @@ const SimulationMM1Priority = ({
                   tempQueueP1.push({ ...temp2, index: i });
                 }
               } else {
+                // if higher priority not arrives before currents ending
+
+                // if partial has been done
                 if (!tempArr[i].startTime) {
                   tempArr[i] = { ...tempArr[i], startTime: currentTime };
-                  tempArr[i].endTime = parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+                  tempArr[i].endTime =
+                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
                   tempArr[i].completed = true;
                   currentTime = tempArr[i].endTime;
                 } else {
-                  tempArr[i].endTime = parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+                  // nothing done previously
+                  tempArr[i].endTime =
+                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
                   tempArr[i].completed = true;
                   currentTime = parseInt(tempArr[i].endTime);
                 }
               }
-              break;
+              continue;
             } else {
-              if (i == 4) {
-                console.log("found", currentTime);
-              }
+              // if next arrived
+
+              // check arrived one priority is higher
               if (tempArr[j].priority > tempArr[i].priority) {
                 if (tempArr[i]?.priority === 3) {
                   tempQueueP3.push({ ...tempArr[i], index: i });
@@ -305,14 +311,32 @@ const SimulationMM1Priority = ({
                 } else {
                   tempQueueP1.push({ ...tempArr[i], index: i });
                 }
-                break;
+                continue;
+              } else {
+                // arrived one priority is not higher
+
+                // if partial has been done
+                if (!tempArr[i].startTime) {
+                  tempArr[i] = { ...tempArr[i], startTime: currentTime };
+                  tempArr[i].endTime =
+                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+                  tempArr[i].completed = true;
+                  currentTime = tempArr[i].endTime;
+                } else {
+                  // nothing done previously
+                  tempArr[i].endTime =
+                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+                  tempArr[i].completed = true;
+                  currentTime = parseInt(tempArr[i].endTime);
+                }
               }
             }
           }
         }
         if (i == tempArr.length - 1) {
           tempArr[i].startTime = currentTime;
-          tempArr[i].endTime = parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
+          tempArr[i].endTime =
+            parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
           currentTime = tempArr[i].endTime;
           tempArr[i].completed = true;
         }
@@ -322,7 +346,8 @@ const SimulationMM1Priority = ({
         for (let l = 0; l < tempQueueP1.length; l++) {
           if (tempArr[tempQueueP1[l].index].startTime) {
             tempArr[tempQueueP1[l].index].endTime =
-              parseInt(currentTime) + parseInt(tempArr[tempQueueP1[l].index].serviceTime);
+              parseInt(currentTime) +
+              parseInt(tempArr[tempQueueP1[l].index].serviceTime);
             currentTime = tempArr[tempQueueP1[l].index].endTime;
             tempArr[tempQueueP1[l].index].completed = true;
           } else {
