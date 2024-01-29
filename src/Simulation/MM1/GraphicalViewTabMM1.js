@@ -24,10 +24,12 @@ const GraphicalViewTab = ({ calculatedData }) => {
     customer: data.customer,
     waitTime: data.waitTime,
   }));
-  const customerTurnaroundTimeData = calculatedData.calculatedData.map((data) => ({
-    customer: data.customer,
-    turnaroundTime: data.turnaroundTime,
-  }));
+  const customerTurnaroundTimeData = calculatedData.calculatedData.map(
+    (data) => ({
+      customer: data.customer,
+      turnaroundTime: data.turnaroundTime,
+    })
+  );
 
   const customerArrivalTimeData = calculatedData.calculatedData.map((data) => ({
     customer: data.customer,
@@ -88,17 +90,17 @@ const GraphicalViewTab = ({ calculatedData }) => {
         </div>
         {/* Line Chart - Customer vs. Arrival Time */}
         <div className="graph-container">
-            <h4 className="text-2xl  text-center  font-bold my-4">Bar Chart</h4>
-            <h4 className="">Customer vs. Turnaround Time</h4>
-            <BarChart width={600} height={400} data={customerTurnaroundTimeData}>
-              <XAxis dataKey="customer" />
-              <YAxis />
-              <CartesianGrid strokeDasharray="" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="turnaroundTime" fill="#3356FF" />
-            </BarChart>
-          </div>
+          <h4 className="text-2xl  text-center  font-bold my-4">Bar Chart</h4>
+          <h4 className="">Customer vs. Turnaround Time</h4>
+          <BarChart width={600} height={400} data={customerTurnaroundTimeData}>
+            <XAxis dataKey="customer" />
+            <YAxis />
+            <CartesianGrid strokeDasharray="" />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="turnaroundTime" fill="#3356FF" />
+          </BarChart>
+        </div>
       </div>
 
       {/* Pie Chart - Customer Distribution */}
@@ -148,11 +150,10 @@ const GraphicalViewTab = ({ calculatedData }) => {
           </PieChart>
         </div>
       </div>
-        <div className="flex flex-row space-x-10  justify-center">
-          {/* Bar Chart - Customer vs. Wait Time */}
-          
-        </div>
-        <div className="flex flex-row space-x-10  justify-center">
+      <div className="flex flex-row space-x-10  justify-center">
+        {/* Bar Chart - Customer vs. Wait Time */}
+      </div>
+      <div className="flex flex-row space-x-10  justify-center">
         <div className="graph-container">
           <h4 className="text-2xl  text-center  font-bold my-4">Line Chart</h4>
           <h4 className="">Customer vs. Service Time</h4>
@@ -177,7 +178,7 @@ const GraphicalViewTab = ({ calculatedData }) => {
             <Line type="monotone" dataKey="arrivalTime" stroke="#3356FF" />
           </LineChart>
         </div>
-        </div>
+      </div>
     </div>
   );
 };
