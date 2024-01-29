@@ -4,7 +4,7 @@ import RandomDataTabMG1 from "./Simulation/MG1/RandomDataTabMG1";
 import CalculatedDataTabMG1 from "./Simulation/MG1/CalculatedDataTabMG1";
 import GraphicalViewTabMG1 from "./Simulation/MG1/GraphicalViewTabMG1";
 
-import { generateRandomDataFunc } from "./functions";
+import { generateRandomDataFunc, factorialIterative } from "./functions";
 
 const SimulationMG1 = ({
   setMg1,

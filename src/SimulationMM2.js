@@ -3,7 +3,7 @@ import RandomDataTab from "./Simulation/MM2/RandomDataTabMM2";
 import CalculatedDataTab from "./Simulation/MM2/CalculatedDataTabMM2";
 import GraphicalViewTab from "./Simulation/MM2/GraphicalViewTabMM2";
 
-import { generateRandomDataFunc } from "./functions";
+import { generateRandomDataFunc, factorialIterative } from "./functions";
 
 const SimulationMM2 = ({
   setMm2,
