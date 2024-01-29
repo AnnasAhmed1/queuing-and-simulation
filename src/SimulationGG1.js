@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import RandomDataTabGG1 from "./Simulation/GG1/RandomDataTabGG1";
 import CalculatedDataTabGG1 from "./Simulation/GG1/CalculatedDataTabGG1";
 import GraphicalViewTabGG1 from "./Simulation/GG1/GraphicalViewTabGG1";
+import { generateRandomDataFunc } from "./functions";
 
 const SimulationGG1 = ({
   setGg1,
@@ -44,15 +45,20 @@ const SimulationGG1 = ({
       setServiceDistribution(selectedDistribution);
       setArrivalDistribution(selectedArrivalDistribution);
 
-      const data = generateRandomData(
-        25,
-        arrivalMeanParam,
-        serviceMeanParam,
-        selectedArrivalDistribution,
-        selectedDistribution
-      );
+      // const data = generateRandomData(
+      //   25,
+      //   arrivalMeanParam,
+      //   serviceMeanParam,
+      //   selectedArrivalDistribution,
+      //   selectedDistribution
+      // );
+      const data = generateRandomDataFunc({
+        arrivalMean: arrivalMeanParam,
+        serviceMean: serviceMeanParam,
+        arrivalDistribution: selectedArrivalDistribution,
+        serviceDistribution: selectedDistribution,
+      });
       setRandomData(data);
-
       const calculatedData = calculateCalculatedData(
         serviceMean,
         data,

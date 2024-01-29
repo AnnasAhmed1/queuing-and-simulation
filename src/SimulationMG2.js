@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import RandomDataTabMG2 from "./Simulation/MG2/RandomDataTabMG2";
 import CalculatedDataTabMG2 from "./Simulation/MG2/CalculatedDataTabMG2";
 import GraphicalViewTabMG2 from "./Simulation/MG2/GraphicalViewTabMG2";
-import { factorialIterative } from "./App";
+
 import CalculatedDataTabMM2 from "./Simulation/MM2/CalculatedDataTabMM2";
 import RandomDataTabMM2 from "./Simulation/MM2/RandomDataTabMM2";
 import GraphicalViewTabMM2 from "./Simulation/MM2/GraphicalViewTabMM2";
+import { generateRandomDataFunc, factorialIterative } from "./functions";
 
 const SimulationMG2 = ({
   setMg2,
@@ -50,12 +51,17 @@ const SimulationMG2 = ({
       setServiceMean(serviceMeanParam);
       setServiceDistribution(selectedDistribution);
 
-      const data = generateRandomData(
-        25,
-        arrivalMeanParam,
-        serviceMeanParam,
-        selectedDistribution
-      );
+      // const data = generateRandomData(
+      //   25,
+      //   arrivalMeanParam,
+      //   serviceMeanParam,
+      //   selectedDistribution
+      // );
+      const data = generateRandomDataFunc({
+        arrivalMean: arrivalMeanParam,
+        serviceMean: serviceMeanParam,
+        serviceDistribution: selectedDistribution,
+      });
       setRandomData(data);
 
       const calculatedData = calculateCalculatedData(data, servers);

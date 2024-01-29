@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import RandomDataTab from "./Simulation/MM2/RandomDataTabMM2";
 import CalculatedDataTab from "./Simulation/MM2/CalculatedDataTabMM2";
 import GraphicalViewTab from "./Simulation/MM2/GraphicalViewTabMM2";
-import { factorialIterative } from "./App";
+
+import { generateRandomDataFunc } from "./functions";
 
 const SimulationMM2 = ({
   setMm2,
@@ -31,7 +32,11 @@ const SimulationMM2 = ({
       setArrivalMean(arrivalMeanParam);
       setServiceMean(serviceMeanParam);
 
-      const data = generateRandomData(25, arrivalMeanParam, serviceMeanParam);
+      // const data = generateRandomData(25, arrivalMeanParam, serviceMeanParam);
+      const data = generateRandomDataFunc({
+        arrivalMean: arrivalMeanParam,
+        serviceMean: serviceMeanParam,
+      });
       setRandomData(data);
 
       const calculatedData = calculateCalculatedData(data, servers);
@@ -294,10 +299,7 @@ const SimulationMM2 = ({
           />
         )}
         {activeTab === "graphical" && (
-          <GraphicalViewTab
-            calculatedData={calculatedData}
-          
-          />
+          <GraphicalViewTab calculatedData={calculatedData} />
         )}
       </div>
     </div>

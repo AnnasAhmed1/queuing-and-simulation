@@ -20,10 +20,10 @@ const RandomDataTab = ({ randomData }) => {
             <tr key={data.customer}>
               <td className="text-center pt-9 font-bold">{data.customer}</td>
               <td className="text-center pt-9 font-bold">
-              {data.interarrivalTime <= 0 ? 1 : data.interarrivalTime}
+                {data.interarrivalTime}
               </td>
-              <td className="text-center pt-9 font-bold">{data.arrivalTime <= 0 ? 1 : data.arrivalTime}</td>
-              <td className="text-center pt-9 font-bold">{data.serviceTime ? data.serviceTime : 1}</td>
+              <td className="text-center pt-9 font-bold">{data.arrivalTime}</td>
+              <td className="text-center pt-9 font-bold">{data.serviceTime}</td>
             </tr>
           ))}
         </tbody>

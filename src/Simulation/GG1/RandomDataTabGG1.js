@@ -1,6 +1,7 @@
 import React from "react";
 //
 const RandomDataTab = ({ randomData }) => {
+  console.log(randomData);
   const simulatedData = randomData;
 
   return (
@@ -16,16 +17,22 @@ const RandomDataTab = ({ randomData }) => {
           </tr>
         </thead>
         <tbody>
-          {simulatedData.map((data) => (
-            <tr key={data.customer}>
-              <td className="text-center pt-9 font-bold">{data.customer}</td>
-              <td className="text-center pt-9 font-bold">
-              {data.interarrivalTime <= 0 ? 1 : data.interarrivalTime}
-              </td>
-              <td className="text-center pt-9 font-bold">{data.arrivalTime <= 0 ? 1 : data.arrivalTime}</td>
-              <td className="text-center pt-9 font-bold">{data.serviceTime ? data.serviceTime : 1}</td>
-            </tr>
-          ))}
+          {simulatedData.map((data) => {
+            return (
+              <tr key={data.customer}>
+                <td className="text-center pt-9 font-bold">{data.customer}</td>
+                <td className="text-center pt-9 font-bold">
+                  {data.interarrivalTime}
+                </td>
+                <td className="text-center pt-9 font-bold">
+                  {data.arrivalTime}
+                </td>
+                <td className="text-center pt-9 font-bold">
+                  {data.serviceTime}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

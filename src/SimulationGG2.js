@@ -7,6 +7,7 @@ import CalculatedDataTabMM2 from "./Simulation/MM2/CalculatedDataTabMM2";
 
 import RandomDataTabMM2 from "./Simulation/MM2/RandomDataTabMM2";
 import GraphicalViewTabMM2 from "./Simulation/MM2/GraphicalViewTabMM2";
+import { generateRandomDataFunc } from "./functions";
 
 const SimulationGG2 = ({
   setGg2,
@@ -48,13 +49,19 @@ const SimulationGG2 = ({
       setServiceDistribution(selectedDistribution);
       setArrivalDistribution(selectedArrivalDistribution);
 
-      const data = generateRandomData(
-        25,
-        arrivalMeanParam,
-        serviceMeanParam,
-        selectedArrivalDistribution,
-        selectedDistribution
-      );
+      // const data = generateRandomData(
+      //   25,
+      //   arrivalMeanParam,
+      //   serviceMeanParam,
+      //   selectedArrivalDistribution,
+      //   selectedDistribution
+      // );
+      const data = generateRandomDataFunc({
+        arrivalMean: arrivalMeanParam,
+        serviceMean: serviceMeanParam,
+        arrivalDistribution: selectedArrivalDistribution,
+        serviceDistribution: selectedDistribution,
+      });
       setRandomData(data);
 
       const calculatedData = calculateCalculatedData(data, servers);

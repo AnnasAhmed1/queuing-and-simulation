@@ -12,13 +12,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Collapse } from "@mui/material";
 import SimulationMM1Priority from "./SimulationMM1Priority";
 
-export function factorialIterative(n) {
-  let result = 1;
-  for (let i = 2; i <= n; i++) {
-    result *= i;
-  }
-  return result;
-}
+import { factorialIterative } from "./functions.js";
+
 export default function App() {
   const [active, setActive] = useState("M/M/1");
   const scrollToSection = (sectionId) => {

@@ -22,12 +22,8 @@ const RandomDataTab = ({ randomData }) => {
               <td className="text-center pt-9 font-bold">
                 {data.interarrivalTime}
               </td>
-              <td className="text-center pt-9 font-bold">
-                { data.arrivalTime}
-              </td>
-              <td className="text-center pt-9 font-bold">
-                {data.serviceTime ? data.serviceTime : 1}
-              </td>
+              <td className="text-center pt-9 font-bold">{data.arrivalTime}</td>
+              <td className="text-center pt-9 font-bold">{data.serviceTime}</td>
             </tr>
           ))}
         </tbody>

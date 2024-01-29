@@ -4,7 +4,7 @@ import RandomDataTab from "./Simulation/MM1Priority/RandomDataTabMM1";
 import CalculatedDataTab from "./Simulation/MM1Priority/CalculatedDataTabMM1";
 import GraphicalViewTab from "./Simulation/MM1Priority/GraphicalViewTabMM1";
 import "./App.css";
-import { factorialIterative } from "./App";
+
 //
 
 const SimulationMM1Priority = ({

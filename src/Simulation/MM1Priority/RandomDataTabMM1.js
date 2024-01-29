@@ -27,9 +27,7 @@ const RandomDataTab = ({ randomData }) => {
                 {" "}
                 {data.arrivalTime < 0 ? 1 : data.arrivalTime}
               </td>
-              <td className="text-center pt-9 font-bold">
-                {data.serviceTime ? data.serviceTime : 1}
-              </td>
+              <td className="text-center pt-9 font-bold">{data.serviceTime}</td>
               <td className="text-center pt-9 font-bold">
                 {data.priority ? data.priority : 1}
               </td>

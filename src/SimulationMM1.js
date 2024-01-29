@@ -4,7 +4,8 @@ import RandomDataTab from "./Simulation/MM1/RandomDataTabMM1";
 import CalculatedDataTab from "./Simulation/MM1/CalculatedDataTabMM1";
 import GraphicalViewTab from "./Simulation/MM1/GraphicalViewTabMM1";
 import "./App.css";
-import { factorialIterative } from "./App";
+
+import { generateRandomDataFunc, factorialIterative } from "./functions";
 //
 
 const SimulationMM1 = ({
@@ -41,8 +42,12 @@ const SimulationMM1 = ({
     if (!isNaN(arrivalMeanParam) && !isNaN(serviceMeanParam)) {
       setArrivalMean(arrivalMeanParam);
       setServiceMean(serviceMeanParam);
-
-      const data = generateRandomData(50, arrivalMeanParam, serviceMeanParam);
+      console.log(arrivalMeanParam, serviceMeanParam);
+      // const data = generateRandomData(50, arrivalMeanParam, serviceMeanParam);
+      const data = generateRandomDataFunc({
+        arrivalMean: arrivalMeanParam,
+        serviceMean: serviceMeanParam,
+      });
       setRandomData(data);
 
       const calculatedData = calculateCalculatedData(data);
