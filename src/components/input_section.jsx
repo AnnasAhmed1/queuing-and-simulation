@@ -27,6 +27,10 @@ const InputSection = ({
         {activeCalculator === "queueing" &&
         active.charAt(active.length - 1) == "2"
           ? active.slice(0, -1) + "C"
+          : active.charAt(active.length - 1) == "2"
+          ? active.slice(0, -1) + "C"
+          : active === "M/M/1Priority"
+          ? "M/M/1 Priority"
           : active}{" "}
         Model {activeCalculator}
       </h1>

@@ -358,7 +358,7 @@ export default function App() {
                     handleActive("M/M/2");
                   }}
                 >
-                  M/M/{activeCalculator === "queueing" ? "C" : "2"}
+                  M/M/{activeCalculator === "queueing" ? "C" : "C"}
                 </li>
                 <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
@@ -368,7 +368,7 @@ export default function App() {
                     handleActive("M/G/2");
                   }}
                 >
-                  M/G/{activeCalculator === "queueing" ? "C" : "2"}
+                  M/G/{activeCalculator === "queueing" ? "C" : "C"}
                 </li>
                 <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
@@ -378,7 +378,7 @@ export default function App() {
                     handleActive("G/G/2");
                   }}
                 >
-                  G/G/{activeCalculator === "queueing" ? "C" : "2"}
+                  G/G/{activeCalculator === "queueing" ? "C" : "C"}
                 </li>
                 <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
