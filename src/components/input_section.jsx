@@ -17,6 +17,8 @@ const InputSection = ({
   arrivalVariance,
   servers,
   setServers,
+  usePriority,
+  setUsePriority,
 }) => {
   // console.log(active);
   // console.log(activeCalculator === "queueing");
@@ -199,6 +201,25 @@ const InputSection = ({
             </div>
           ) : null
         ) : null}
+      </div>
+      <div className="flex/ items-center gap-2 mx-[auto] justify-center pr-16/ relative">
+        <label
+          className="block mb-2 text-xl flex py-2 px-4 rounded-lg font-normal text-white w-[60%] ml-auto mt-5 bg-[#242B2E] font-bold text-center "
+          htmlFor="priorityCheck"
+        >
+          {" "}
+          Priority
+          <input
+            id="priorityCheck"
+            type="checkbox"
+            className="w-[60%]/ w-6 p-2 border text-center rounded-md ml-auto border-black absolute/"
+            value={usePriority}
+            checked={usePriority}
+            onChange={(e) => {
+              setUsePriority(e.target.checked);
+            }}
+          />
+        </label>
       </div>
     </div>
   );

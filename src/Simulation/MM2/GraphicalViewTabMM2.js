@@ -66,8 +66,8 @@ const GraphicalViewTabMM2 = ({
                 {data.serverData.map((data, index) => (
                   <div className="gantt-chart-bar" key={data.customer}>
                     <div className="gantt-chart-label">
-                      <div className="start-time2">{data.starttime}</div>
-                      <div className="end-time2">{data.endtime}</div>
+                      <div className="start-time2">{data.startTime}</div>
+                      <div className="end-time2">{data.endTime}</div>
                     </div>
                     <div className="customer-name">C {data.customer}</div>
                   </div>
@@ -153,7 +153,7 @@ const GraphicalViewTabMM2 = ({
                 height={300}
                 data={data.serverData.map((data) => ({
                   customer: data.customer,
-                  arrivalTime: data.waitTime,
+                  waitTime: data.waitTime,
                 }))}
               >
                 <XAxis dataKey="customer" />
@@ -161,7 +161,7 @@ const GraphicalViewTabMM2 = ({
                 <CartesianGrid strokeDasharray="" />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="arrivalTime" stroke="#3356FF" />
+                <Line type="monotone" dataKey="waitTime" stroke="#3356FF" />
               </LineChart>
             </div>
           );
@@ -183,7 +183,7 @@ const GraphicalViewTabMM2 = ({
                 height={300}
                 data={data.serverData.map((data) => ({
                   customer: data.customer,
-                  arrivalTime: data.turnaroundTime,
+                  turnaroundTime: data.turnaroundTime,
                 }))}
               >
                 <XAxis dataKey="customer" />
@@ -191,7 +191,11 @@ const GraphicalViewTabMM2 = ({
                 <CartesianGrid strokeDasharray="" />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="arrivalTime" stroke="#3356FF" />
+                <Line
+                  type="monotone"
+                  dataKey="turnaroundTime"
+                  stroke="#3356FF"
+                />
               </LineChart>
             </div>
           );
@@ -213,7 +217,7 @@ const GraphicalViewTabMM2 = ({
                 height={300}
                 data={data.serverData.map((data) => ({
                   customer: data.customer,
-                  arrivalTime: data.serviceTime,
+                  serviceTime: data.serviceTime,
                 }))}
               >
                 <XAxis dataKey="customer" />
@@ -221,14 +225,14 @@ const GraphicalViewTabMM2 = ({
                 <CartesianGrid strokeDasharray="" />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="arrivalTime" stroke="#3356FF" />
+                <Line type="monotone" dataKey="serviceTime" stroke="#3356FF" />
               </LineChart>
             </div>
           );
         })}
       </div>
       <h1 className="text-center font-bold text-3xl underline pb-1 my-10">
-        Arrival vs. Arrival Time
+        Arrival vs. Service Time
       </h1>
       <div className="flex flex-row space-x-10 justify-center flex flex-wrap">
         {calculatedData?.finalServersData?.map((data, index) => {
@@ -243,7 +247,7 @@ const GraphicalViewTabMM2 = ({
                 height={300}
                 data={data.serverData.map((data) => ({
                   customer: data.arrivalTime,
-                  arrivalTime: data.serviceTime,
+                  serviceTime: data.serviceTime,
                 }))}
               >
                 <XAxis dataKey="customer" />
@@ -251,7 +255,7 @@ const GraphicalViewTabMM2 = ({
                 <CartesianGrid strokeDasharray="" />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="arrivalTime" stroke="#3356FF" />
+                <Line type="monotone" dataKey="serviceTime" stroke="#3356FF" />
               </LineChart>
             </div>
           );

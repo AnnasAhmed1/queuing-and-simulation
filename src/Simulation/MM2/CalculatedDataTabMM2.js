@@ -175,10 +175,10 @@ const CalculatedDataTabMM2 = ({ calculatedData, randomData }) => {
             <tr>
               <td className="text-center pt-4/ font-bold">System</td>
               <td className="text-center pt-4/ font-bold">
-                {calculatedData.systemIdlePercentage}%
+                {calculatedData?.systemIdlePercentage}%
               </td>
               <td className="text-center pt-4/ font-bold">
-                {calculatedData.systemUtilizationPercentage}%
+                {calculatedData?.systemUtilizationPercentage}%
               </td>
             </tr>
           </tbody>

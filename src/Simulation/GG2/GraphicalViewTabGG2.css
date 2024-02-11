@@ -56,22 +56,19 @@
   font-size: 14px;
   white-space: nowrap;
   padding: 2px 5px;
-  width:100%;
+  width: 100%;
 }
 
 .start-time2 {
   justify-self: flex-start;
-  color : rgba(236, 236, 236, 0.865);
+  /* color : rgba(236, 236, 236, 0.865); */
 }
 
 .end-time2 {
   justify-self: flex-end;
-  color : rgba(236, 236, 236, 0.865);
+  /* color: rgba(236, 236, 236, 0.865); */
 }
 
 .customer-name {
   margin: 10px 0px;
 }
-
-
-

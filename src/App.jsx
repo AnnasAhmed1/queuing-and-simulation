@@ -15,7 +15,7 @@ import SimulationMM1Priority from "./SimulationMM1Priority";
 import { factorialIterative } from "./functions.js";
 
 export default function App() {
-  const [active, setActive] = useState("M/M/1");
+  const [active, setActive] = useState("M/M/2");
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -61,6 +61,7 @@ export default function App() {
   const [mg2, setMg2] = useState(false);
   const [gg1, setGg1] = useState(false);
   const [gg2, setGg2] = useState(false);
+  const [usePriority, setUsePriority] = useState(false);
   const [open, setOpen] = useState(true);
 
   const mm1Queueing = (arrivalMean, serviceMean) => {
@@ -320,7 +321,7 @@ export default function App() {
               } transition-all duration-1000 opacity-100/ transform/ translate-y-0/`}
             >
               <ul className="flex/">
-                <li
+                {/* <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
                     active === "M/M/1" ? "bg-[#394144]" : "bg-transparent"
                   } text-white px-10 border-b py-2 text-lg text-left`}
@@ -339,8 +340,8 @@ export default function App() {
                   }}
                 >
                   M/G/1
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
                     active === "G/G/1" ? "bg-[#394144]" : "bg-transparent"
                   } text-white px-10 border-b py-2 text-lg text-left`}
@@ -349,7 +350,7 @@ export default function App() {
                   }}
                 >
                   G/G/1
-                </li>
+                </li> */}
                 <li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
                     active === "M/M/2" ? "bg-[#394144]" : "bg-transparent"
@@ -562,6 +563,8 @@ export default function App() {
               setServiceVariance={setServiceVariance}
               servers={servers}
               setServers={setServers}
+              usePriority={usePriority}
+              setUsePriority={setUsePriority}
             />
             <button
               className="bg-[#007BFF] hover:bg-[#0069D9] py-2 px-4 rounded-lg mt-6 text-white text-lg"
@@ -720,6 +723,8 @@ export default function App() {
               serviceMean={serviceMean}
               setServiceMean={setServiceMean}
               servers={servers}
+              usePriority={usePriority}
+              setUsePriority={setUsePriority}
               onClick={() => {
                 scrollToSection("calculatorSection");
                 window.location.reload();
@@ -751,6 +756,8 @@ export default function App() {
               serviceMean={serviceMean}
               setServiceMean={setServiceMean}
               servers={servers}
+              usePriority={usePriority}
+              setUsePriority={setUsePriority}
               onClick={() => {
                 scrollToSection("calculatorSection");
                 window.location.reload();
@@ -786,6 +793,8 @@ export default function App() {
               serviceMean={serviceMean}
               servers={servers}
               setServiceMean={setServiceMean}
+              usePriority={usePriority}
+              setUsePriority={setUsePriority}
               onClick={() => {
                 scrollToSection("calculatorSection");
                 window.location.reload();

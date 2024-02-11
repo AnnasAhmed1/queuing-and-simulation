@@ -1,6 +1,7 @@
 import React from "react";
 
-const CalculatedDataTab = ({ calculatedData }) => {
+const CalculatedDataTab = ({ calculatedData, usePriority }) => {
+  console.log(calculatedData, "prp");
   return (
     <div className="overflow-auto">
       <h2 className="text-center text-3xl  font-bold mb-5">Calculated Data</h2>

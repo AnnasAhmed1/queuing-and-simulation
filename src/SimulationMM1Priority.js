@@ -4,7 +4,11 @@ import RandomDataTab from "./Simulation/MM1Priority/RandomDataTabMM1";
 import CalculatedDataTab from "./Simulation/MM1Priority/CalculatedDataTabMM1";
 import GraphicalViewTab from "./Simulation/MM1Priority/GraphicalViewTabMM1";
 import "./App.css";
-import { generateRandomDataFunc, factorialIterative } from "./functions";
+import {
+  generateRandomDataFunc,
+  factorialIterative,
+  calculateCalculatedDataPriority,
+} from "./functions";
 
 //
 
@@ -45,6 +49,7 @@ const SimulationMM1Priority = ({
 
       const data = generateRandomData(50, arrivalMeanParam, serviceMeanParam);
       setRandomData(data);
+
       const dummyData = [
         {
           customer: 1,
@@ -103,7 +108,9 @@ const SimulationMM1Priority = ({
           priority: 2,
         },
       ];
-      const calculatedData = calculateCalculatedData(dummyData);
+      console.log(data, "ddd");
+      console.log(dummyData, "ddd");
+      const calculatedData = calculateCalculatedDataPriority(data);
       setCalculatedData(calculatedData);
     }
   }, [mm1]);
@@ -269,94 +276,18 @@ const SimulationMM1Priority = ({
   }
 
   const calculateCalculatedData = (data) => {
-    let data2 = [
-      {
-        customer: 1,
-        interArrivalTime: 0,
-        arrival: 0,
-        serviceTime: 1,
-        priority: 2,
-        servedTime: 0,
-      },
-      {
-        customer: 2,
-        interArrivalTime: 5,
-        arrival: 5,
-        serviceTime: 1,
-        priority: 2,
-        servedTime: 0,
-      },
-      {
-        customer: 3,
-        interArrivalTime: 6,
-        arrival: 11,
-        serviceTime: 10,
-        priority: 1,
-        servedTime: 0,
-      },
-      {
-        customer: 4,
-        interArrivalTime: 2,
-        arrival: 13,
-        serviceTime: 1,
-        priority: 2,
-        servedTime: 0,
-      },
-      {
-        customer: 5,
-        interArrivalTime: 0,
-        arrival: 13,
-        serviceTime: 4,
-        priority: 3,
-        servedTime: 0,
-      },
-      {
-        customer: 6,
-        interArrivalTime: 4,
-        arrival: 17,
-        serviceTime: 6,
-        priority: 1,
-        servedTime: 0,
-      },
-      {
-        customer: 7,
-        interArrivalTime: 3,
-        arrival: 20,
-        serviceTime: 1,
-        priority: 1,
-        servedTime: 0,
-      },
-      {
-        customer: 8,
-        interArrivalTime: 3,
-        arrival: 23,
-        serviceTime: 2,
-        priority: 2,
-        servedTime: 0,
-      },
-    ];
-    // data = data?.map((v, i) => {
-    //   v.servedTime = 0;
-    // });
-
     const calculatedData = [];
-    // console.log(result, "res");
     data = data.map((obj) => ({
       ...obj,
       arrival: obj.arrivalTime,
       servedTime: 0,
     }));
     console.log(data, "data");
-    console.log(data2, "data2");
     if (data.length) {
       let result = prioritySimulation(data);
-      // const calculatedData = [];
-      // let serverIdleTime = 0;
       let serverUtilizationTime = 0;
       let totalWaitTime = 0;
       let totalTurnaroundTime = 0;
-      // let finalData = [];
-      // startTime = 0;
       let finalData = [...result];
       for (let i = 0; i < finalData.length; i++) {
         const {
@@ -384,20 +315,12 @@ const SimulationMM1Priority = ({
         totalWaitTime += waitTime;
         totalTurnaroundTime += turnaroundTime;
         serverUtilizationTime += serviceTime;
-        // startTime = endTime;
       }
       const averageWaitTime = totalWaitTime / finalData.length;
       const averageTurnaroundTime = totalTurnaroundTime / finalData.length;
       const totalTime = Math.max(...finalData.map((item) => item.endTime));
       const serverUtilization = serverUtilizationTime / totalTime;
       const serverIdle = 1 - serverUtilization;
-      console.log({
-        calculatedData,
-        averageWaitTime,
-        averageTurnaroundTime,
-        serverUtilization,
-        serverIdle,
-      });
       return {
         calculatedData,
         averageWaitTime,
@@ -405,12 +328,6 @@ const SimulationMM1Priority = ({
         serverUtilization,
         serverIdle,
       };
-
-      // return {
-      //   ...priority3CalculatedData(),
-      //   ...priority2CalculatedData(),
-      //   ...priority1CalculatedData(),
-      // };
     }
   };
 
