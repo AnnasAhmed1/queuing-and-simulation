@@ -50,6 +50,12 @@
   max-width: 90px !important;
   /* width: 100%; */
 }
+.gantt-chart-bar.p1{
+  border: 5px solid green;
+}
+.gantt-chart-bar.p2{
+  border: 5px solid blue;
+}
 
 .gantt-chart-bar.idle {
   background-color: #ccc;

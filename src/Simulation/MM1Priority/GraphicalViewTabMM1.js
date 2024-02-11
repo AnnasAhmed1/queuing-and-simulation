@@ -52,10 +52,29 @@ const GraphicalViewTab = ({ calculatedData }) => {
     <div>
       <h3 className="text-3xl  text-center  font-bold mb-10">Graphical View</h3>
       <h4 className="text-2xl  text-center  font-bold mb-4">Gantt Chart</h4>
-      <h3 className="text-xl  font-bold">Server 1</h3>
+
+      <div className="flex justify-between items-center mx-6">
+        <h3 className="text-xl  font-bold">Server 1</h3>
+        <div className="flex">
+          <div className=" py-1 px-3 flex justify-center items-center text-white bg-red-600">
+            lowest priority
+          </div>
+          <div className=" py-1 px-3 flex justify-center items-center text-white bg-blue-600">
+            moderate priority
+          </div>
+          <div className=" py-1 px-3 flex justify-center items-center text-white bg-green-600">
+            highest priority
+          </div>
+        </div>
+      </div>
       <div className="gantt-chart" ref={ganttChartRef}>
         {calculatedData.calculatedData.map((data, index) => (
-          <div className="gantt-chart-bar" key={data.customer}>
+          <div
+            className={`gantt-chart-bar ${
+              data?.priority === 1 ? "p1" : data?.priority === 2 ? "p2" : null
+            }`}
+            key={data.customer}
+          >
             <div className="gantt-chart-label">
               <div className="start-time">{data.startTime}</div>
               <div className="end-time">{data.endTime}</div>
