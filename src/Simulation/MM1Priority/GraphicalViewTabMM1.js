@@ -76,7 +76,7 @@ const GraphicalViewTab = ({ calculatedData }) => {
             key={data.customer}
           >
             <div className="gantt-chart-label">
-              <div className="start-time">{data.startTime}</div>
+              <div className="start-time text-black">{data.startTime}</div>
               <div className="end-time">{data.endTime}</div>
             </div>
             <div className="customer-name">C {data.customer}</div>
