@@ -21,7 +21,7 @@ const RandomDataTab = ({ randomData }) => {
             <tr key={data.customer}>
               <td className="text-center pt-9 font-bold">{data.customer}</td>
               <td className="text-center pt-9 font-bold">
-                {data.interarrivalTime < 0 ? 1 : data.interarrivalTime}
+                {data.interArrivalTime < 0 ? 1 : data.interArrivalTime}
               </td>
               <td className="text-center pt-9 font-bold">
                 {" "}

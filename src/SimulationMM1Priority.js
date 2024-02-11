@@ -48,56 +48,56 @@ const SimulationMM1Priority = ({
       const dummyData = [
         {
           customer: 1,
-          interarrivalTime: 0,
+          interArrivalTime: 0,
           arrivalTime: 0,
           serviceTime: 1,
           priority: 2,
         },
         {
           customer: 2,
-          interarrivalTime: 5,
+          interArrivalTime: 5,
           arrivalTime: 5,
           serviceTime: 1,
           priority: 2,
         },
         {
           customer: 3,
-          interarrivalTime: 6,
+          interArrivalTime: 6,
           arrivalTime: 11,
           serviceTime: 10,
           priority: 1,
         },
         {
           customer: 4,
-          interarrivalTime: 2,
+          interArrivalTime: 2,
           arrivalTime: 13,
           serviceTime: 1,
           priority: 2,
         },
         {
           customer: 5,
-          interarrivalTime: 0,
+          interArrivalTime: 0,
           arrivalTime: 13,
           serviceTime: 4,
           priority: 3,
         },
         {
           customer: 6,
-          interarrivalTime: 4,
+          interArrivalTime: 4,
           arrivalTime: 17,
           serviceTime: 6,
           priority: 1,
         },
         {
           customer: 7,
-          interarrivalTime: 3,
+          interArrivalTime: 3,
           arrivalTime: 20,
           serviceTime: 1,
           priority: 1,
         },
         {
           customer: 8,
-          interarrivalTime: 3,
+          interArrivalTime: 3,
           arrivalTime: 23,
           serviceTime: 2,
           priority: 2,
@@ -124,22 +124,22 @@ const SimulationMM1Priority = ({
     let val = 0;
     let Z = 10112166;
     for (let i = 1; i <= count; i++) {
-      let interarrivalTime = Math.round(generateRandomTime(arrivalMean));
-      // interarrivalTime += 1;
+      let interArrivalTime = Math.round(generateRandomTime(arrivalMean));
+      // interArrivalTime += 1;
       if (i == 1) {
         console.log("chk passs");
-        interarrivalTime = 0;
+        interArrivalTime = 0;
       }
       const serviceTime = Math.round(generateRandomTime(serviceMean));
 
       const tempArr = generatePriority(Z);
       const priority = tempArr[0];
       Z = tempArr[1];
-      arrivalTime += interarrivalTime;
+      arrivalTime += interArrivalTime;
 
       data?.push({
         customer: i,
-        interarrivalTime: interarrivalTime,
+        interArrivalTime: interArrivalTime,
         arrivalTime: arrivalTime,
         serviceTime: Math.max(1, Math.min(10, serviceTime)), // Ensure value is within 1 to 10 range
         priority,
@@ -166,246 +166,238 @@ const SimulationMM1Priority = ({
     return time;
   };
 
+  function createCustomer(customerData) {
+    return {
+      customerData: customerData,
+    };
+  }
+
+  function allCustomersServed(customers) {
+    for (let customer of customers) {
+      if (
+        customer.customerData.servedTime !== customer.customerData.serviceTime
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function simulate(customers) {
+    let currentTime = 0;
+    let completed = false;
+    let test = 0;
+    while (!completed) {
+      let nextCustomer = null;
+      test++;
+      if (test > 40) {
+        console.log("loop break");
+        break;
+      }
+      for (let customer of customers) {
+        if (
+          customer.customerData.arrival <= currentTime &&
+          customer.customerData.servedTime <
+            customer.customerData.serviceTime &&
+          (nextCustomer === null ||
+            customer.customerData.priority < nextCustomer.customerData.priority)
+        ) {
+          nextCustomer = customer;
+        }
+      }
+
+      if (nextCustomer !== null) {
+        if (!nextCustomer.customerData.hasOwnProperty("startTime")) {
+          nextCustomer.customerData.startTime = currentTime;
+        }
+        if (
+          nextCustomer.customerData.priority === 1 &&
+          nextCustomer.customerData.servedTime <
+            nextCustomer.customerData.serviceTime
+        ) {
+          nextCustomer.customerData.servedTime +=
+            nextCustomer.customerData.serviceTime;
+          currentTime += nextCustomer.customerData.serviceTime;
+          if (
+            nextCustomer.customerData.servedTime ===
+            nextCustomer.customerData.serviceTime
+          ) {
+            nextCustomer.customerData.endTime = currentTime;
+          }
+          continue;
+        } else if (
+          nextCustomer.customerData.priority === 2 &&
+          nextCustomer.customerData.servedTime <
+            nextCustomer.customerData.serviceTime
+        ) {
+          nextCustomer.customerData.servedTime++;
+          currentTime++;
+          if (
+            nextCustomer.customerData.servedTime ===
+            nextCustomer.customerData.serviceTime
+          ) {
+            nextCustomer.customerData.endTime = currentTime;
+          }
+          continue;
+        } else if (
+          nextCustomer.customerData.priority === 3 &&
+          nextCustomer.customerData.servedTime <
+            nextCustomer.customerData.serviceTime
+        ) {
+          nextCustomer.customerData.servedTime++;
+          currentTime++;
+          if (
+            nextCustomer.customerData.servedTime ===
+            nextCustomer.customerData.serviceTime
+          ) {
+            nextCustomer.customerData.endTime = currentTime;
+          }
+          continue;
+        }
+      }
+
+      completed = allCustomersServed(customers);
+      currentTime++;
+    }
+
+    return customers.map((customer) => customer.customerData);
+  }
+
+  function prioritySimulation(data) {
+    let customers = data?.map((customerData) => createCustomer(customerData));
+    return simulate(customers);
+  }
+
   const calculateCalculatedData = (data) => {
+    let data2 = [
+      {
+        customer: 1,
+        interArrivalTime: 0,
+        arrival: 0,
+        serviceTime: 1,
+        priority: 2,
+        servedTime: 0,
+      },
+      {
+        customer: 2,
+        interArrivalTime: 5,
+        arrival: 5,
+        serviceTime: 1,
+        priority: 2,
+        servedTime: 0,
+      },
+      {
+        customer: 3,
+        interArrivalTime: 6,
+        arrival: 11,
+        serviceTime: 10,
+        priority: 1,
+        servedTime: 0,
+      },
+      {
+        customer: 4,
+        interArrivalTime: 2,
+        arrival: 13,
+        serviceTime: 1,
+        priority: 2,
+        servedTime: 0,
+      },
+      {
+        customer: 5,
+        interArrivalTime: 0,
+        arrival: 13,
+        serviceTime: 4,
+        priority: 3,
+        servedTime: 0,
+      },
+      {
+        customer: 6,
+        interArrivalTime: 4,
+        arrival: 17,
+        serviceTime: 6,
+        priority: 1,
+        servedTime: 0,
+      },
+      {
+        customer: 7,
+        interArrivalTime: 3,
+        arrival: 20,
+        serviceTime: 1,
+        priority: 1,
+        servedTime: 0,
+      },
+      {
+        customer: 8,
+        interArrivalTime: 3,
+        arrival: 23,
+        serviceTime: 2,
+        priority: 2,
+        servedTime: 0,
+      },
+    ];
+    // data = data?.map((v, i) => {
+    //   v.servedTime = 0;
+    // });
+
+    const calculatedData = [];
+    // console.log(result, "res");
     data = data.map((obj) => ({
       ...obj,
-      completed: false,
+      arrival: obj.arrivalTime,
+      servedTime: 0,
     }));
-    let tempArr = [...data];
+    console.log(data, "data");
+    console.log(data2, "data2");
     if (data.length) {
-      const calculatedData = [];
-      let serverIdleTime = 0;
+      let result = prioritySimulation(data);
+      // const calculatedData = [];
+      // let serverIdleTime = 0;
       let serverUtilizationTime = 0;
-      // let startTime = 0;
       let totalWaitTime = 0;
       let totalTurnaroundTime = 0;
-      let finalData = [];
-      let currentTime = 0;
-      let push = false;
-      let tempQueue = [];
-      let tempQueueP1 = [];
-      let tempQueueP2 = [];
-      let tempQueueP3 = [];
-      let loop = 0;
-
-      for (let i = 0; i < tempArr.length; i++) {
-        loop++;
-        if (loop > 30) {
-          break;
-        }
-        // check if current one is already completed then move to next index
-        if (tempArr[i].completed == true) {
-          continue;
-        }
-        // if (tempQueueP3.length) {
-        //   for (let k = 0; k < tempQueueP3.length; k++) {
-        //     if (tempQueueP3[k].priority >= tempArr[i].priority) {
-        //       tempArr[tempQueueP3[k].index].endTime =
-        //       parseInt(currentTime) + parseInt(tempQueueP3[k].serviceTime);
-        //       if (!tempArr[tempQueueP3[k].index].startTime) {
-        //         tempArr[tempQueueP3[k].index].startTime = currentTime;
-        //       }
-        //       currentTime = tempArr[tempQueueP3[k].index]?.endTime;
-        //       tempArr[tempQueueP3[k].index].completed = true;
-        //       tempQueueP3.splice(k, 1);
-        //     }
-        //   }
-        // }
-        // if (tempQueueP2.length) {
-        //   for (let k = 0; k < tempQueueP2.length; k++) {
-        //     if (tempQueueP2[k].priority >= tempArr[i].priority) {
-        //       tempArr[tempQueueP2[k].index].endTime =
-        //       parseInt(currentTime) + parseInt(tempQueueP2[k].serviceTime);
-        //       if (!tempArr[tempQueueP2[k].index].startTime) {
-        //         tempArr[tempQueueP2[k].index].startTime = currentTime;
-        //       }
-        //       currentTime = tempArr[tempQueueP2[k].index]?.endTime;
-        //       tempArr[tempQueueP2[k].index].completed = true;
-        //       tempQueueP2.splice(k, 1);
-        //     }
-        //   }
-        // }
-        // if (tempQueueP1.length) {
-        //   if (tempQueueP1[0].priority >= tempArr[i].priority) {
-        //     i = tempQueueP1[0].index;
-        //     console.log(tempArr[i], i,"servt");
-        //     tempArr[i].serviceTime =
-        //       parseInt(tempQueueP1[0].serviceTime)
-        //       +
-        //       parseInt(tempArr[i].serviceTime);
-        //       console.log( typeof tempArr[i].serviceTime, "typeof");
-        //     tempQueueP1.splice(0, 1);
-        //   }
-        // }
-        // update current time
-        if (currentTime < tempArr[i].arrivalTime) {
-          currentTime = tempArr[i].arrivalTime;
-        }
-        // if priority is 3 do nothing
-        if (tempArr[i].priority == 3) {
-          tempArr[i].startTime = currentTime;
-          tempArr[i].endTime =
-            parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-          currentTime = tempArr[i].endTime;
-          tempArr[i].completed = true;
-          continue;
-        } else {
-          for (let j = i + 1; j < tempArr.length; j++) {
-            if (tempArr[j].completed == true) {
-              continue;
-            }
-            // check if next not arrived
-            if (tempArr[j].arrivalTime > currentTime) {
-              // check if higher priority arrives before currents ending
-              if (
-                parseInt(tempArr[i].serviceTime) + parseInt(currentTime) >
-                  tempArr[j].arrivalTime &&
-                tempArr[j].priority > tempArr[i].priority
-              ) {
-                // run this uptill new arrives and send the remaining to temperory array
-                let temp1 = { ...tempArr[i] };
-                let temp2 = { ...tempArr[i] };
-                temp1.serviceTime = tempArr[j].arrivalTime - currentTime;
-                temp1.startTime = currentTime;
-                temp1.endTime =
-                  parseInt(currentTime) + parseInt(temp1.serviceTime);
-                temp2.serviceTime = temp2.serviceTime - temp1.serviceTime;
-                currentTime = temp1.endTime;
-                tempArr[i] = { ...temp1 };
-                // sending to temperory array on the basis of priority
-                if (temp2?.priority === 3) {
-                  tempQueueP3.push({ ...temp2, index: i });
-                } else if (temp2?.priority === 2) {
-                  tempQueueP2.push({ ...temp2, index: i });
-                } else {
-                  tempQueueP1.push({ ...temp2, index: i });
-                }
-              } else {
-                // if higher priority not arrives before currents ending
-
-                // if partial has been done
-                if (!tempArr[i].startTime) {
-                  tempArr[i] = { ...tempArr[i], startTime: currentTime };
-                  tempArr[i].endTime =
-                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-                  tempArr[i].completed = true;
-                  currentTime = tempArr[i].endTime;
-                } else {
-                  // nothing done previously
-                  tempArr[i].endTime =
-                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-                  tempArr[i].completed = true;
-                  currentTime = parseInt(tempArr[i].endTime);
-                }
-              }
-              continue;
-            } else {
-              // if next arrived
-
-              // check arrived one priority is higher
-              if (tempArr[j].priority > tempArr[i].priority) {
-                if (tempArr[i]?.priority === 3) {
-                  tempQueueP3.push({ ...tempArr[i], index: i });
-                } else if (tempArr[i]?.priority === 2) {
-                  tempQueueP2.push({ ...tempArr[i], index: i });
-                } else {
-                  tempQueueP1.push({ ...tempArr[i], index: i });
-                }
-                continue;
-              } else {
-                // arrived one priority is not higher
-
-                // if partial has been done
-                if (!tempArr[i].startTime) {
-                  tempArr[i] = { ...tempArr[i], startTime: currentTime };
-                  tempArr[i].endTime =
-                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-                  tempArr[i].completed = true;
-                  currentTime = tempArr[i].endTime;
-                } else {
-                  // nothing done previously
-                  tempArr[i].endTime =
-                    parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-                  tempArr[i].completed = true;
-                  currentTime = parseInt(tempArr[i].endTime);
-                }
-              }
-            }
-          }
-        }
-        if (i == tempArr.length - 1) {
-          tempArr[i].startTime = currentTime;
-          tempArr[i].endTime =
-            parseInt(currentTime) + parseInt(tempArr[i].serviceTime);
-          currentTime = tempArr[i].endTime;
-          tempArr[i].completed = true;
-        }
-      }
-      if (tempQueueP1.length) {
-        console.log("vhk pass");
-        for (let l = 0; l < tempQueueP1.length; l++) {
-          if (tempArr[tempQueueP1[l].index].startTime) {
-            tempArr[tempQueueP1[l].index].endTime =
-              parseInt(currentTime) +
-              parseInt(tempArr[tempQueueP1[l].index].serviceTime);
-            currentTime = tempArr[tempQueueP1[l].index].endTime;
-            tempArr[tempQueueP1[l].index].completed = true;
-          } else {
-            tempArr[tempQueueP1[l].index].startTime = currentTime;
-            tempArr[tempQueueP1[l].index].endTime =
-              currentTime + tempArr[tempQueueP1[l].index].serviceTime;
-            currentTime = tempArr[tempQueueP1[l].index].endTime;
-            tempArr[tempQueueP1[l].index].completed = true;
-          }
-        }
-      }
+      // let finalData = [];
       // startTime = 0;
-      finalData = [...tempArr];
-      finalData = finalData.filter((v) => v.serviceTime > 0);
+      let finalData = [...result];
       for (let i = 0; i < finalData.length; i++) {
         const {
           customer,
-          interarrivalTime,
-          arrivalTime,
+          interArrivalTime,
+          arrival,
           serviceTime,
           priority,
           startTime,
           endTime,
         } = finalData[i];
-        // const endTime = Math.max(arrivalTime, startTime) + serviceTime;
-        // console.log(startTime, 111111);
-        // const waitTime = startTime - arrivalTime;
-        // console.log(startTime);
-        // console.log(arrivalTime);
-        // const waitTime =endTime-startTime-serviceTime;
-        const turnaroundTime = endTime - arrivalTime;
+        const turnaroundTime = endTime - arrival;
         const waitTime = turnaroundTime - serviceTime;
         calculatedData.push({
           customer,
           priority,
-          interarrivalTime,
-          arrivalTime,
+          interArrivalTime,
+          arrivalTime: arrival,
           serviceTime,
-          // startTime: Math.max(arrivalTime, startTime),
           startTime,
           endTime,
-          waitTime: i == 0 ? 0 : waitTime,
+          waitTime: waitTime,
           turnaroundTime,
         });
-
         totalWaitTime += waitTime;
         totalTurnaroundTime += turnaroundTime;
-
         serverUtilizationTime += serviceTime;
-
         // startTime = endTime;
       }
-
       const averageWaitTime = totalWaitTime / finalData.length;
       const averageTurnaroundTime = totalTurnaroundTime / finalData.length;
-      const totalTime = finalData[finalData.length - 1].endTime;
+      const totalTime = Math.max(...finalData.map((item) => item.endTime));
       const serverUtilization = serverUtilizationTime / totalTime;
       const serverIdle = 1 - serverUtilization;
+      console.log({
+        calculatedData,
+        averageWaitTime,
+        averageTurnaroundTime,
+        serverUtilization,
+        serverIdle,
+      });
       return {
         calculatedData,
         averageWaitTime,
@@ -413,6 +405,7 @@ const SimulationMM1Priority = ({
         serverUtilization,
         serverIdle,
       };
+
       // return {
       //   ...priority3CalculatedData(),
       //   ...priority2CalculatedData(),
