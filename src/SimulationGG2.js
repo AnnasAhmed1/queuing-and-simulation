@@ -606,7 +606,7 @@ const SimulationGG2 = ({
       </div>
 
       <div className="w-full ">
-        {activeTab === "random" && <RandomDataTab randomData={randomData} />}
+        {activeTab === "random" && <RandomDataTab randomData={randomData} usePriority={usePriority}/>}
         {activeTab === "calculated" &&
           (!usePriority ? (
             <CalculatedDataTab

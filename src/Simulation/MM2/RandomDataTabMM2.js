@@ -1,6 +1,6 @@
 import React from "react";
 
-const RandomDataTab = ({ randomData }) => {
+const RandomDataTab = ({ randomData, usePriority }) => {
   const simulatedData = randomData;
 
   return (
@@ -13,7 +13,7 @@ const RandomDataTab = ({ randomData }) => {
             <th className="text-xl">Interarrival Time</th>
             <th className="text-xl">Arrival Time</th>
             <th className="text-xl">Service Time</th>
-            <th className="text-xl">Priority</th>
+            {usePriority && <th className="text-xl">Priority</th>}
           </tr>
         </thead>
         <tbody>
@@ -25,9 +25,11 @@ const RandomDataTab = ({ randomData }) => {
               </td>
               <td className="text-center pt-9 font-bold">{data.arrivalTime}</td>
               <td className="text-center pt-9 font-bold">{data.serviceTime}</td>
-              <td className="text-center pt-9 font-bold">
-                {data.priority ? data.priority : 1}
-              </td>
+              {usePriority && (
+                <td className="text-center pt-9 font-bold">
+                  {data.priority ? data.priority : 1}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
