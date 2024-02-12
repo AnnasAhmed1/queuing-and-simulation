@@ -158,32 +158,33 @@ const CalculatedDataTabMM2 = ({ calculatedData, randomData }) => {
           </table>
         </div>
       </div>
-
-      <div>
-        <h3 className="text-2xl font-bold mb-4 text-center ">
-          System Idle and Utilization Time
-        </h3>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-xl">System</th>
-              <th className="text-xl">Idle Time</th>
-              <th className="text-xl">Utilization Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="text-center pt-4/ font-bold">System</td>
-              <td className="text-center pt-4/ font-bold">
-                {calculatedData?.systemIdlePercentage}%
-              </td>
-              <td className="text-center pt-4/ font-bold">
-                {calculatedData?.systemUtilizationPercentage}%
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {calculatedData?.finalServersData?.length > 1 ? (
+        <div>
+          <h3 className="text-2xl font-bold mb-4 text-center ">
+            System Idle and Utilization Time
+          </h3>
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th className="text-xl">System</th>
+                <th className="text-xl">Idle Time</th>
+                <th className="text-xl">Utilization Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="text-center pt-4/ font-bold">System</td>
+                <td className="text-center pt-4/ font-bold">
+                  {calculatedData?.systemIdlePercentage}%
+                </td>
+                <td className="text-center pt-4/ font-bold">
+                  {calculatedData?.systemUtilizationPercentage}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
     </div>
   );
 };
