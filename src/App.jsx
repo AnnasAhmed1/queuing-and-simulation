@@ -381,7 +381,7 @@ export default function App() {
                 >
                   G/G/{activeCalculator === "queueing" ? "C" : "C"}
                 </li>
-                <li
+                {/* `<li
                   className={`hover:bg-[#394144] flex-1 text-center/ tracking-widest ${
                     active === "M/M/1Priority"
                       ? "bg-[#394144]"
@@ -392,7 +392,7 @@ export default function App() {
                   }}
                 >
                   M/M/1 priority
-                </li>
+                </li>` */}
               </ul>
             </Collapse>
             <h1
