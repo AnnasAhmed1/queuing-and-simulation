@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import RandomDataTabMG2 from "./Simulation/MG2/RandomDataTabMG2";
-import CalculatedDataTabMG2 from "./Simulation/MG2/CalculatedDataTabMG2";
-import GraphicalViewTabMG2 from "./Simulation/MG2/GraphicalViewTabMG2";
-
-import CalculatedDataTabMM2 from "./Simulation/MM2/CalculatedDataTabMM2";
-import RandomDataTabMM2 from "./Simulation/MM2/RandomDataTabMM2";
-import GraphicalViewTabMM2 from "./Simulation/MM2/GraphicalViewTabMM2";
+import RandomDataTab from "./Simulation/MM2/RandomDataTabMM2";
+import CalculatedDataTab from "./Simulation/MM2/CalculatedDataTabMM2";
+import GraphicalViewTab from "./Simulation/MM2/GraphicalViewTabMM2";
+import CalculatedDataTabP from "./Simulation/MM1Priority/CalculatedDataTabMM1";
+import GraphicalViewTabP from "./Simulation/MM1Priority/GraphicalViewTabMM1";
 import {
   generateRandomDataFunc,
   factorialIterative,
@@ -66,6 +64,7 @@ const SimulationMG2 = ({
         arrivalMean: arrivalMeanParam,
         serviceMean: serviceMeanParam,
         serviceDistribution: selectedDistribution,
+        usePriority,
       });
       setRandomData(data);
 
@@ -544,30 +543,25 @@ const SimulationMG2 = ({
       </div>
 
       <div className="w-full ">
-        {activeTab === "random" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Distribution: {serviceDistribution}
-            </p>
-            <RandomDataTabMM2 randomData={randomData} />
-          </>
-        )}
-        {activeTab === "calculated" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Distribution: {serviceDistribution}
-            </p>
-            <CalculatedDataTabMM2 calculatedData={calculatedData} />
-          </>
-        )}
-        {activeTab === "graphical" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Distribution: {serviceDistribution}
-            </p>
-            <GraphicalViewTabMM2 calculatedData={calculatedData} />
-          </>
-        )}
+        {activeTab === "random" && <RandomDataTab randomData={randomData} />}
+        {activeTab === "calculated" &&
+          (!usePriority ? (
+            <CalculatedDataTab
+              calculatedData={calculatedData}
+              randomData={randomData}
+            />
+          ) : (
+            <CalculatedDataTabP
+              calculatedData={calculatedData}
+              usePriority={usePriority}
+            />
+          ))}
+        {activeTab === "graphical" &&
+          (!usePriority ? (
+            <GraphicalViewTab calculatedData={calculatedData} />
+          ) : (
+            <GraphicalViewTabP calculatedData={calculatedData} />
+          ))}
       </div>
     </div>
   );

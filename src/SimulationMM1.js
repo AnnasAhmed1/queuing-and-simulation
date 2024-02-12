@@ -5,7 +5,7 @@ import CalculatedDataTab from "./Simulation/MM1/CalculatedDataTabMM1";
 import GraphicalViewTab from "./Simulation/MM1/GraphicalViewTabMM1";
 import "./App.css";
 
-import { generateRandomDataFunc, factorialIterative } from "./functions";
+import { generateRandomDataFunc, factorialIterative, generatePriority } from "./functions";
 //
 
 const SimulationMM1 = ({
@@ -59,6 +59,7 @@ const SimulationMM1 = ({
     const data = [];
     let arrivalTime = 0;
     let val = 0;
+    let Z = 10112166;
 
     for (let i = 1; i <= count; i++) {
       const interarrivalTime = Math.round(generateRandomTime(arrivalMean));
@@ -68,12 +69,16 @@ const SimulationMM1 = ({
 
       console.log(val, "val_chkkk");
       const serviceTime = Math.round(generateRandomTime(serviceMean));
+      const tempArr = generatePriority(Z);
+      const priority = tempArr[0];
+      Z = tempArr[1];
       arrivalTime += interarrivalTime;
       data?.push({
         customer: i,
         interarrivalTime,
         arrivalTime: i === 1 ? 0 : arrivalTime,
-        serviceTime: Math.max(1, Math.min(10, serviceTime)), // Ensure value is within 1 to 10 range
+        serviceTime: Math.max(1, Math.min(10, serviceTime)), 
+        priority,// Ensure value is within 1 to 10 range
       });
       const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
       const denominator = factorialIterative(i - 1);

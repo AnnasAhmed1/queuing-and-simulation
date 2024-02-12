@@ -13,6 +13,7 @@ const RandomDataTab = ({ randomData }) => {
             <th className="text-xl">Interarrival Time</th>
             <th className="text-xl">Arrival Time</th>
             <th className="text-xl">Service Time</th>
+            <th className="text-xl">Priority</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +25,9 @@ const RandomDataTab = ({ randomData }) => {
               </td>
               <td className="text-center pt-9 font-bold">{data.arrivalTime}</td>
               <td className="text-center pt-9 font-bold">{data.serviceTime}</td>
+              <td className="text-center pt-9 font-bold">
+                {data.priority ? data.priority : 1}
+              </td>
             </tr>
           ))}
         </tbody>

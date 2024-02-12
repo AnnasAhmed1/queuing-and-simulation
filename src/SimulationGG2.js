@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import RandomDataTabGG2 from "./Simulation/GG2/RandomDataTabGG2";
-import CalculatedDataTabGG2 from "./Simulation/GG2/CalculatedDataTabGG2";
-import GraphicalViewTabGG2 from "./Simulation/GG2/GraphicalViewTabGG2";
-import CalculatedDataTabMM2 from "./Simulation/MM2/CalculatedDataTabMM2";
-
-import RandomDataTabMM2 from "./Simulation/MM2/RandomDataTabMM2";
-import GraphicalViewTabMM2 from "./Simulation/MM2/GraphicalViewTabMM2";
+import RandomDataTab from "./Simulation/MM2/RandomDataTabMM2";
+import CalculatedDataTab from "./Simulation/MM2/CalculatedDataTabMM2";
+import GraphicalViewTab from "./Simulation/MM2/GraphicalViewTabMM2";
+import CalculatedDataTabP from "./Simulation/MM1Priority/CalculatedDataTabMM1";
+import GraphicalViewTabP from "./Simulation/MM1Priority/GraphicalViewTabMM1";
 import { calculateCalculatedData, generateRandomDataFunc } from "./functions";
 
 const SimulationGG2 = ({
@@ -62,6 +60,7 @@ const SimulationGG2 = ({
         serviceMean: serviceMeanParam,
         arrivalDistribution: selectedArrivalDistribution,
         serviceDistribution: selectedDistribution,
+        usePriority,
       });
       setRandomData(data);
 
@@ -607,39 +606,25 @@ const SimulationGG2 = ({
       </div>
 
       <div className="w-full ">
-        {activeTab === "random" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Service Distribution: {serviceDistribution}
-            </p>
-            <p className="text-center text-lg  underline">
-              Using Arrival Distribution: {arrivalDistribution}
-            </p>
-            <RandomDataTabMM2 randomData={randomData} />
-          </>
-        )}
-        {activeTab === "calculated" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Service Distribution: {serviceDistribution}
-            </p>
-            <p className="text-center text-lg  underline">
-              Using Arrival Distribution: {arrivalDistribution}
-            </p>
-            <CalculatedDataTabMM2 calculatedData={calculatedData} />
-          </>
-        )}
-        {activeTab === "graphical" && (
-          <>
-            <p className="text-center text-lg  underline">
-              Using Service Distribution: {serviceDistribution}
-            </p>
-            <p className="text-center text-lg  underline">
-              Using Arrival Distribution: {arrivalDistribution}
-            </p>
-            <GraphicalViewTabMM2 calculatedData={calculatedData} />
-          </>
-        )}
+        {activeTab === "random" && <RandomDataTab randomData={randomData} />}
+        {activeTab === "calculated" &&
+          (!usePriority ? (
+            <CalculatedDataTab
+              calculatedData={calculatedData}
+              randomData={randomData}
+            />
+          ) : (
+            <CalculatedDataTabP
+              calculatedData={calculatedData}
+              usePriority={usePriority}
+            />
+          ))}
+        {activeTab === "graphical" &&
+          (!usePriority ? (
+            <GraphicalViewTab calculatedData={calculatedData} />
+          ) : (
+            <GraphicalViewTabP calculatedData={calculatedData} />
+          ))}
       </div>
     </div>
   );

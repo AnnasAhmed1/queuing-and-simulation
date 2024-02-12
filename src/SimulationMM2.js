@@ -43,6 +43,7 @@ const SimulationMM2 = ({
       const data = generateRandomDataFunc({
         arrivalMean: arrivalMeanParam,
         serviceMean: serviceMeanParam,
+        usePriority,
       });
       setRandomData(data);
 

@@ -12,11 +12,13 @@ export const generateRandomDataFunc = ({
   serviceMean,
   arrivalDistribution,
   serviceDistribution,
+  usePriority,
 }) => {
   const data = [];
   let arrivalTime = 0;
   let val = 0;
   let chk = 0;
+  let Z = 10112166;
   arrivalMean = parseFloat(arrivalMean);
   serviceMean = parseFloat(serviceMean);
   for (let i = 1; i <= count; i++) {
@@ -54,13 +56,26 @@ export const generateRandomDataFunc = ({
         serviceTime = Math.floor(serviceMean);
       }
     }
+    // 600
+    // 618
+    const tempArr = generatePriority(Z);
+    const priority = tempArr[0];
+    Z = tempArr[1];
     arrivalTime += interarrivalTime;
+
     data.push({
       customer: i,
       interarrivalTime,
       arrivalTime: arrivalTime,
       serviceTime,
+      priority,
     });
+    // if (usePriority) {
+    //   data.push({
+    //     ...data,
+
+    //   });
+    // }
     const numerator = Math.exp(-arrivalMean) * Math.pow(arrivalMean, i - 1);
     const denominator = factorialIterative(i - 1);
     val = val + numerator / denominator;
@@ -144,6 +159,17 @@ const generateRandomServiceTime = (mean, distribution) => {
   }
   console.log(serviceTime, "service1");
   return serviceTime;
+};
+
+export const generatePriority = (Z) => {
+  const a = 3;
+  const b = 1;
+  const A = 55;
+  const M = 1194;
+  const C = 9;
+  const R = (A * Z + C) % M;
+  const priority = Math.round((b - a) * (R / M) + a);
+  return [priority, R];
 };
 
 // caculated data
@@ -258,8 +284,8 @@ export const calculateCalculatedDataPriority = (data) => {
   console.log(data, "data");
   if (data.length) {
     let result = prioritySimulation(data);
+    console.log(data, "cccc");
     result = result.filter((v) => v?.endTime > 0);
-    console.log(result, "ress");
     let serverUtilizationTime = 0;
     let totalWaitTime = 0;
     let totalTurnaroundTime = 0;
@@ -296,6 +322,7 @@ export const calculateCalculatedDataPriority = (data) => {
     const totalTime = Math.max(...finalData.map((item) => item.endTime));
     const serverUtilization = serverUtilizationTime / totalTime;
     const serverIdle = 1 - serverUtilization;
+    console.log(calculatedData, "cccc");
     return {
       calculatedData,
       averageWaitTime,
@@ -446,7 +473,7 @@ export const calculateCalculatedData = (data, servers, priority) => {
       return calculateCalculatedDataSimple(data, servers);
     } else {
       console.log("simpleprioritypri");
-      return calculateCalculatedDataPriority(data, servers);
+      return calculateCalculatedDataPriority(data);
     }
   }
 };
